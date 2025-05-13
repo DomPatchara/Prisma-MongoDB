@@ -125,7 +125,7 @@ export const GET = async () => {
 }
 ```
 
-### 🧪 [ 10.] Use Data -- by Server Fetching 
+###  [ 10.] Use Data -- by Server Fetching 
 ```typescript
 // page.tsx
 
