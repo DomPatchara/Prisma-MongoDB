@@ -21,6 +21,11 @@ This creates a `prisma` folder with a `schema.prisma` file.
 ### [ 3.] Configure Prisma for MongoDB
 Update `datasource` in `schema.prisma`:
 ```prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
 datasource db {
     provider = "mongodb" <------------ "ใช้ my database จากเดิมเป็น Posgresql"
     url      = env("DATABASE_URL")
@@ -35,7 +40,7 @@ DATABASE_URL="mongodb+srv://<username>:<password>@cluster.mongodb.net/<database_
 Add models in `schema.prisma`:
 ```prisma
 model User {
-    id    String @id @default(auto()) @map("_id") @db.ObjectId
+    id    String @id @default(uuid()) @map("_id") 
     name  String
     email String @unique
 }
@@ -54,18 +59,20 @@ npx prisma generate
 ```
 
 ### [ 7.] Use Prisma in Next.js
-Create a `libs/prismadb.ts` file:
+Create a `lib/prismadb.ts` file:
 ```typescript
-// src/libs/prismadb.ts
-import { PrismaClient } from '@prisma/client'
+// src/lib/prismadb.ts
+import { PrismaClient } from "./generated/prisma"
 
-const globalForPrisma = globalThis as unknown as {
+const globalForPrisma = global as unknown as {
   prisma: PrismaClient 
 }
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient()
+export const prisma = globalForPrisma.prisma || new PrismaClient()
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+
+
 
 ```
 
