@@ -45,17 +45,17 @@ model User {
     email String @unique
 }
 ```
-### [ 5.] Push Prisma Schema to Database
+### [ 5.] Generate Prisma Client
+Run:
+```bash
+npx prisma generate
+```
+
+### [ 6.] Push Prisma Schema to Database
   push Schema ที่เราสร้างไว้ ส่งเข้าไปใน Database ของเรา --- เป็นการสร้าง Collection ใน MongoDB
 
 ```bash
 npx prisma db push
-```
-
-### [ 6.] Generate Prisma Client
-Run:
-```bash
-npx prisma generate
 ```
 
 ### [ 7.] Use Prisma in Next.js
@@ -71,8 +71,6 @@ const globalForPrisma = global as unknown as {
 export const prisma = globalForPrisma.prisma || new PrismaClient()
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
-
-
 
 ```
 
